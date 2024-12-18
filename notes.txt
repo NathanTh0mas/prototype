@@ -1,0 +1,21 @@
+PlatformIO terminal commands:
+// install packages
+pio pkg install (insert name of pkg)
+
+// run command
+pio run
+
+// determine usb serial port
+ls /dev/cu.*
+
+// compile and upload
+pio run --target upload --upload-port /dev/cu.usbserial-32310 (or equivalent number)
+
+// view serial monitor
+pio device monitor --port /dev/cu.usbserial-32320 --baud 115200
+
+// log file
+pio device monitor > ~/Desktop/logs/text/data.txt
+
+// csv
+pio device monitor > ~/Desktop/logs/csv/data.csv
