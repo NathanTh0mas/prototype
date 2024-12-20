@@ -5,7 +5,7 @@
 #ifndef HEARTRATE_H
 #define HEARTRATE_H
 
-void setupHeartRateSensor();
+float calculateAverageBPM();
 void getHeartRateData();
 
 #endif

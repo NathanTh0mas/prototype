@@ -2,7 +2,7 @@
 // Created by Nathan on 10/10/2024.
 //
 #include <math.h>
-#include "Maths.h"
+#include "maths.h"
 
 float convertAccData(uint16_t rawValue, float scaleFactor) {
     return (static_cast<float>(rawValue) / 32768.0f) * scaleFactor;
@@ -33,19 +33,3 @@ void getEulerAngles(float q0, float q1, float q2, float q3, float &roll, float &
 }
 
 
-// BPM Calculation Function
-float calculateBPM(int beatCount, int intervalMs) {
-    float bpm = (beatCount / (intervalMs / 1000.0)) * 60.0;
-    return bpm;
-}
-
-
-/**
- * More efficient to count bpm over a shorter time period (e.g. 10s - 15s)
- * @param beats
- * @param timePeriod
- * @return beats per minute
- */
-float getBeatsPerMinute(float numberOfBeats, float setTimePeriod) {
-    return (numberOfBeats * 60) / setTimePeriod;
-}

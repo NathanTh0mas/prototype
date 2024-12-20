@@ -2,7 +2,7 @@
 // Created by Nathan on 21/10/2024.
 //
 #include "imu.h"
-#include <Maths.h>    // For convertAccData, convertGyroData, getEulerAngles, etc.
+#include <maths.h>    // For convertAccData, convertGyroData, getEulerAngles, etc.
 #include <comms.h>    // Include if needed for communication; remove if not required
 
 // Static (internal) variables for IMU data

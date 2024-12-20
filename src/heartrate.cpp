@@ -10,6 +10,9 @@
  * - may be done on device? if not an ADC is required
  * Amplify and filter signal
  *
+ *
+ * static const int: use for constants that should not change and need to be shared across all instances or retained in a function.
+ * static int: use for variables that need to retain their value between function calls or be shared among all class instances
 */
 
 #include "heartrate.h"
@@ -18,64 +21,97 @@
 // Pin to which the heart rate sensor is connected
 static const int heartSensorPin = A0;
 
-// Adjustable parameters for peak detection
-// Tweak these values based on your sensor's output
-static float threshold = 520;
+// Parameters for peak detection
+static float threshold = 218;
 static unsigned long sampleInterval = 20;
-static unsigned long lastSampleTime = 0;
+static unsigned long lastSampleTime;
 
 // Variables for heart rate calculation
-static unsigned long lastBeatTime = 0;
-static unsigned long beatInterval = 0;
-static float bpm = 0;
+static unsigned long lastBeatTime;
+static unsigned long beatInterval;
+static float bpm;
 static bool beatDetected = false;
+static int beatCount;
+static float averageBPM;
 
-// Optional: Smoothing variables
+// Printing timer
+static unsigned long lastPrintTime;                         // time since last BPM print
+                                                            // long because millis() is a long value
+static const unsigned long printInterval = 30000;
+
+// Smoothing variables
 static const int smoothingWindow = 4;
 static int readings[smoothingWindow];
-static int readIndex = 0;
-static int total = 0;
+static double bpmValues[smoothingWindow];
+static int bpmIndex;
+static int readIndex;
+static int total;
 
-void setupHeartRateSensor() {
-    // Initialize the smoothing array
-    for (int i = 0; i < smoothingWindow; i++) {
-        readings[i] = 0;
+float calculateAverageBPM() {
+    float totalBPM = 0.0;
+    for (double bpmValue : bpmValues) {
+        totalBPM += bpmValue;
     }
-
-    // If needed, you could do additional sensor setup here
-    // (e.g., pinMode(heartSensorPin, INPUT) if required)
+    return totalBPM / smoothingWindow;
 }
 
 void getHeartRateData() {
-    // Check if it’s time to sample
+    // only reads sample after interval
     if (millis() - lastSampleTime < sampleInterval) {
-        return; // Not time yet, so return early
+        return;
     }
+
+    // takes timestamp of sample taken
     lastSampleTime = millis();
 
+    // retrieves raw data from the device
     int rawValue = analogRead(heartSensorPin);
 
-    // Smoothing (rolling average)
-    total -= readings[readIndex];
-    readings[readIndex] = rawValue;
-    total += readings[readIndex];
-    readIndex = (readIndex + 1) % smoothingWindow;
-    float smoothedValue = (float)total / smoothingWindow;
+    // smoothing (rolling average)
+    total -= readings[readIndex];                           // updates the running total by removing the oldest value
+    readings[readIndex] = rawValue;                         // stores the new reading in the array
+    total += readings[readIndex];                           // adds the new reading to the total
+    readIndex = (readIndex + 1) % smoothingWindow;          // iterates through the array and wraps back one with smoothingWindow has been reached
+    float smoothedValue = (float) total / smoothingWindow;  // calculates the smoothed value as the average
 
-    // Detect peaks
+    Serial.print("Smoothed value: ");
+    Serial.println(smoothedValue);
+
+    // Peak Detection
     if (!beatDetected && smoothedValue > threshold) {
         beatDetected = true;
-        beatInterval = millis() - lastBeatTime;
+        beatInterval = millis() - lastBeatTime;             // millis() returns the number of milliseconds since the device was turned on
+        beatCount +=1;
         lastBeatTime = millis();
 
         if (beatInterval > 0) {
-            bpm = 60000.0 / (float)beatInterval;
+//            bpm = 60000.0 / (float) beatInterval;
+            bpmValues[bpmIndex] = 60000.0 / (float) beatInterval;
+            bpmIndex = (bpmIndex + 1) % smoothingWindow;
         }
-        Serial.print("Heartbeat detected! BPM: ");
-        Serial.println(bpm, 1);
     }
+
+//    Serial.print("Beat interval:  ");
+//    Serial.println(beatInterval);
+    Serial.print("Beat count:     ");
+    Serial.println(beatCount);
+    Serial.println();
 
     if (beatDetected && smoothedValue < threshold) {
         beatDetected = false;
     }
+
+    // Print BPM every interval
+    if (millis() - lastPrintTime >= printInterval) {
+        lastPrintTime = millis();                           // resets the timer
+        averageBPM = calculateAverageBPM();           // Calculate average BPM
+
+        Serial.println();
+        Serial.print("Average BPM: ");
+        Serial.println(averageBPM, 1);                      // Print the average BPM to 1 decimal place
+        Serial.println();
+
+        beatCount = 0;
+    }
 }
+

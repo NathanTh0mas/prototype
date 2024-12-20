@@ -1,6 +1,9 @@
 #include <imu.h>
 #include <heartrate.h>
 
+
+static const int heartSensorPin = A0;
+
 // Setup function to initialize the IMU
 void setup() {
     // Start serial communication
@@ -10,14 +13,19 @@ void setup() {
     while (!Serial) {}
 
     // setup sensor ranges
-    setupIMU();
-    setupHeartRateSensor();
-
+    // setupIMU();
     delay(1);
 }
 
 void loop() {
-   updateIMUData();
-   getHeartRateData();
-   delay(100);
+    int rawValue = analogRead(heartSensorPin);
+
+    if (millis() > 3000) {
+        Serial.print("Raw value:      ");
+        Serial.println(rawValue);
+        getHeartRateData();
+    }
+
+    // updateIMUData();
+    delay(100);
 }

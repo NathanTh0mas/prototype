@@ -12,10 +12,10 @@ ls /dev/cu.*
 pio run --target upload --upload-port /dev/cu.usbserial-32310 (or equivalent number)
 
 // view serial monitor
-pio device monitor --port /dev/cu.usbserial-32320 --baud 115200
+pio device monitor --port /dev/cu.usbserial-32310 --baud 115200
 
 // log file
-pio device monitor > ~/Desktop/logs/text/data.txt
+pio device monitor > ~/Developer/projects/git/logs/prototype/heart\ rate/data.txt
 
 // csv
 pio device monitor > ~/Desktop/logs/csv/data.csv
