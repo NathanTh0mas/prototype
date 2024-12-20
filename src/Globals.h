@@ -10,7 +10,7 @@
 #include <Adafruit_Sensor.h>    // Adafruit sensor library (optional, for unified sensor support)
 #include <Adafruit_LSM9DS0.h>   // Adafruit LSM9DS0 sensor library
 #include <MadgwickAHRS.h>
-#include <Comms.h>
+#include <comms.h>
 #include <Maths.h>
 
 // Scale factors

@@ -2,7 +2,7 @@
 // Created by Nathan on 10/10/2024.
 //
 #include <Wire.h>
-#include "Comms.h"
+#include "comms.h"
 
 // Function to write to specified register
 void writeToRegister(uint8_t deviceAddress, uint8_t regAddress, uint8_t value) {
