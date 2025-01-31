@@ -1,7 +1,7 @@
 //#include <imu.h>
 //#include <heartrate.h>
 
-#define NO_SW_SERIAL
+
 #include <Arduino.h>
 #include <Adafruit_GPS.h>
 
