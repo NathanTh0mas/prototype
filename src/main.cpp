@@ -1,6 +1,6 @@
 #include <imu.h>
 #include <heartrate.h>
-
+#include <Arduino.h>
 
 static const int heartSensorPin = A0;
 
@@ -20,12 +20,12 @@ void setup() {
 void loop() {
     int rawValue = analogRead(heartSensorPin);
 
-    if (millis() > 3000) {
-        Serial.print("Raw value:      ");
-        Serial.println(rawValue);
-        getHeartRateData();
-    }
+        if (millis() > 3000) {
+            Serial.print("Raw value:      ");
+            Serial.println(rawValue);
+            getHeartRateData();
+        }
 
-    // updateIMUData();
-    delay(100);
+        // updateIMUData();
+        delay(100);
 }

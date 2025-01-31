@@ -13,6 +13,12 @@
  *
  * static const int: use for constants that should not change and need to be shared across all instances or retained in a function.
  * static int: use for variables that need to retain their value between function calls or be shared among all class instances
+ *
+ *
+ *
+ *
+ *
+ *
 */
 
 #include "heartrate.h"
@@ -29,7 +35,7 @@ static unsigned long lastSampleTime;
 // Variables for heart rate calculation
 static unsigned long lastBeatTime;
 static unsigned long beatInterval;
-static float bpm;
+// static float bpm;
 static bool beatDetected = false;
 static int beatCount;
 static float averageBPM;
