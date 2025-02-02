@@ -30,7 +30,7 @@
 //Adafruit_GPS GPS(&GPS_SERIAL);
 //
 //char nmeaSentence[100]; // buffer to store NMEA sentence
-//size_t nmea_index = 0;              // index for the buffer
+//size_t nmea_index = 0;  // index for the buffer
 //
 //void setup() {
 //
@@ -68,37 +68,47 @@
 //}
 //
 ///**
-// * GPS.read()
-// * GPS.newNMEAreceived() -  new data received?
-// * GPS.parse(GPS.lastNMEA())
-// * GPS.available() - How many bytes are available to read
-// * GPS.write() - sends a byte of data to the GPS module
+// * if string literals "" are used then the string is automatically null-terminated,
+// * otherwise when entering characters using '' the '\0' null termination must be used
 // */
-//
-//void loop() {
-///**
-// * GPS.read() must be called frequently or the buffer may overflow
-// * Common approach is to use a char buffer to hold an entire sentence, read char until "\n" is presented
-// * NMEA sentence is 82 char long
-// * call newNMEAreceived() after, at least, every 10 calls
-// */
-//    if (GPS.available()) {
-//        char c = GPS.read();
-//
-//        /**
-//         * if string literals "" are used then the string is automatically null-terminated,
-//         * otherwise when entering characters using '' the '\0' null termination must be used
-//         */
-//        if (c == '\n') {
-//            nmeaSentence[nmea_index] = '\0';    // creates a c-style string and allows print to terminal
-//            Serial.println(nmeaSentence);
-//            nmea_index = 0;
-//        } else {
-//            if (nmea_index < sizeof(nmeaSentence) - 1) {
-//                nmeaSentence[nmea_index] = c;
-//                nmea_index++;
-//            }
+//void checkNMEASentence(char c){
+//    if (c == '\n') {
+//        nmeaSentence[nmea_index] = '\0';    // creates a c-style string and allows print to terminal
+//        Serial.println(nmeaSentence);
+//        nmea_index = 0;
+//    } else {
+//        if (nmea_index < sizeof(nmeaSentence) - 1) {
+//            nmeaSentence[nmea_index] = c;
+//            nmea_index++;
 //        }
 //    }
 //}
 //
+//void loop() {
+//    /**
+//     * GPS.available() checks if data is available (waiting to be read) within the buffer
+//     */
+//    while (GPS.available()) {
+//        /**
+//        * GPS.read() pulls data from the buffer
+//        */
+//        char c = GPS.read();
+//        /**
+//         * GPS.parse() is a state-machine parser that processes incoming NMEA sentence data one char at a time.
+//         * states include - start detection, accumulation, end-of-sentence detection, tokenisation and validation
+//         * It stores the the tokenised sentence into variables (long, lat, alt, etc)
+//         */
+//        GPS.parse(&c);
+//    }
+//
+//    /**
+//     * GPS.NMEAreceived() returns true when a new complete NMEA sentence has been received and approved by GPS.parse()
+//     */
+//    if(GPS.newNMEAreceived()){
+//        /**
+//         * GPS.lastNMEA() stores the entire last received NMEA sentence.
+//         */
+//        Serial.println(GPS.lastNMEA());
+//    }
+//}
+

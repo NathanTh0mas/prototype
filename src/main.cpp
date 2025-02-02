@@ -12,8 +12,6 @@
 // Connect GPS module to GPS Serial
 Adafruit_GPS GPS(&GPS_SERIAL);
 
-char nmeaSentence[100]; // buffer to store NMEA sentence
-size_t nmea_index = 0;              // index for the buffer
 
 void setup() {
     Serial.begin(115200);   // Initialises microcontroller
@@ -29,19 +27,13 @@ void setup() {
 }
 
 void loop() {
-    if (GPS.available()) {
+    while (GPS.available()) {
         char c = GPS.read();
+        GPS.parse(&c);
+    }
 
-        if (c == '\n') {
-            nmeaSentence[nmea_index] = '\0';    // creates a c-style string and allows print to terminal
-            Serial.println(nmeaSentence);
-            nmea_index = 0;
-        } else {
-            if (nmea_index < sizeof(nmeaSentence) - 1) {
-                nmeaSentence[nmea_index] = c;
-                nmea_index++;
-            }
-        }
+    if(GPS.newNMEAreceived()){
+        Serial.println(GPS.lastNMEA());
     }
 }
 
