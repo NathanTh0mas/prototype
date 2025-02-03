@@ -2,8 +2,8 @@
 // Created by Nathan on 21/10/2024.
 //
 #include "imu.h"
-#include <maths.h>    // For convertAccData, convertGyroData, getEulerAngles, etc.
-#include <comms.h>    // Include if needed for communication; remove if not required
+#include "components/imu/imu_conversion.h"    // For convertAccData, convertGyroData, getEulerAngles, etc.
+#include "communication/comms.h"    // Include if needed for communication; remove if not required
 
 // Static (internal) variables for IMU data
 static Adafruit_LSM9DS0 imu = Adafruit_LSM9DS0();

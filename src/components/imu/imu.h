@@ -5,8 +5,8 @@
 #define IMU_H
 
 #include <Arduino.h>
-#include <Adafruit_LSM9DS0.h>
-#include <MadgwickAHRS.h>
+#include "Adafruit_LSM9DS0.h"
+#include "MadgwickAHRS.h"
 
 // IMU-related constants (localized here instead of global)
 constexpr float X_SCALE_FACTOR = 2.0f;

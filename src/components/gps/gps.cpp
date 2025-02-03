@@ -50,7 +50,7 @@
  * Decimal degrees = Degrees + (Minutes/60)
  */
 
-#include <gps.h>
+#include "gps.h"
 #include <math.h>
 
 /**

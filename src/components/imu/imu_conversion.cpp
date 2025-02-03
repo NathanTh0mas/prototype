@@ -2,7 +2,7 @@
 // Created by Nathan on 10/10/2024.
 //
 #include <math.h>
-#include "maths.h"
+#include "imu_conversion.h"
 
 float convertAccData(uint16_t rawValue, float scaleFactor) {
     return (static_cast<float>(rawValue) / 32768.0f) * scaleFactor;

@@ -3,7 +3,7 @@
 
 
 #include <Arduino.h>
-#include <gps.h>
+#include "components/gps/gps.h"
 
 void setup() {
     setupGPS();

@@ -6,7 +6,7 @@
 #define PROTOTYPE_GPS_H
 
 #include <Arduino.h>
-#include <Adafruit_GPS.h>
+#include "Adafruit_GPS.h"
 
 #define BAUD_RATE 9600                  // Max baud rate for GPS module
 #define GPS_SERIAL Serial1              // Set Serial1 for GPS functionality
